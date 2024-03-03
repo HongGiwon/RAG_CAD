@@ -36,10 +36,10 @@ spec:
           name: volume
         resources:
           requests:
-            cpu: 1
-            memory: "40Gi"
+            cpu: 8
+            memory: "80Gi"
           limits:
-            cpu: 2
+            cpu: 8
             memory: "80Gi"
             nvidia.com/gpu: 2
       nodeSelector:

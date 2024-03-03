@@ -55,7 +55,7 @@ if __name__ == "__main__":
 
     data_path = "prompts/rag_nq_" +str(num_retrieved_docs)+ "_cad_chat.json"
     full_data_path = "prompts/rag_nq_" +str(num_retrieved_docs)+ "_chat.json"
-    output_path = "outputs/rag_nq_" +str(num_retrieved_docs)+ "_cad_chat_ll2_7b.json"
+    output_path = "outputs/rag_nq_" +str(num_retrieved_docs)+ "_cad_" + args.model_name.split("/")[-1] + ".json"
     model_name = args.model_name
 
     max_seq_len = args.max_seq_len

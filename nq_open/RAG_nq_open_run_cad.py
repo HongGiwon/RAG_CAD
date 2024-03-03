@@ -51,7 +51,7 @@ def next_full_tok_gen(prompt, generated_token_accum, max_ans_len):
 if __name__ == "__main__":
     args = parse_args()
 
-    num_retrieved_docs = 10
+    num_retrieved_docs = args.num_retrieved_docs
 
     data_path = "prompts/rag_nq_" +str(num_retrieved_docs)+ "_cad_chat.json"
     full_data_path = "prompts/rag_nq_" +str(num_retrieved_docs)+ "_chat.json"

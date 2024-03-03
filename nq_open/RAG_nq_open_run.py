@@ -34,7 +34,7 @@ def get_ll2_model(model_name: str, dtype: torch.dtype = torch.bfloat16) -> Tuple
 if __name__ == "__main__":
     args = parse_args()
 
-    num_retrieved_docs = 10
+    num_retrieved_docs = args.num_retrieved_docs
     data_path = "prompts/rag_nq_" +str(num_retrieved_docs)+ "_chat.json"
     output_path = "outputs/rag_nq_" +str(num_retrieved_docs)+ "_" + args.model_name.split("/")[-1] + ".json"
     model_name = args.model_name

@@ -5,6 +5,20 @@ from datasets import load_dataset
 from tqdm import tqdm
 import pickle
 import json
+import argparse
+
+def parse_args():
+    parser = argparse.ArgumentParser()
+
+    parser.add_argument("--model_name", type=str, default="meta-llama/Llama-2-70b-chat-hf",
+                        help="Name of pretrained model")
+    parser.add_argument("--max_seq_len", type=int, default=4096, help="max seq len")
+    parser.add_argument("--max_gen_len", type=int, default=64, help="max gen len")
+    parser.add_argument("--num_retrieved_docs", type=int, default=5, help="num_of_retrieved_docs")
+    parser.add_argument("--alpha", type=float, default=0.5, help="cad alpha")
+
+    args = parser.parse_args()
+    return args
 
 def get_ll2_model(model_name: str, dtype: torch.dtype = torch.bfloat16) -> Tuple[Any, Any]:
     model_kwargs = {}
@@ -34,52 +48,54 @@ def next_full_tok_gen(prompt, generated_token_accum, max_ans_len):
         generated_ids = model.generate(model_inputs, max_new_tokens=max_ans_len, do_sample=True)
     return generated_ids, len(model_inputs[0]) - generated_token_accum[0].shape[0]
 
-num_retrieved_docs = 10
+if __name__ == "__main__":
+    args = parse_args()
 
-data_path = "prompts/rag_nq_" +str(num_retrieved_docs)+ "_cad_chat.json"
-full_data_path = "prompts/rag_nq_" +str(num_retrieved_docs)+ "_chat.json"
-output_path = "outputs/rag_nq_" +str(num_retrieved_docs)+ "_cad_chat_ll2_7b.json"
-model_name = "meta-llama/Llama-2-7b-chat-hf"
+    num_retrieved_docs = 10
 
+    data_path = "prompts/rag_nq_" +str(num_retrieved_docs)+ "_cad_chat.json"
+    full_data_path = "prompts/rag_nq_" +str(num_retrieved_docs)+ "_chat.json"
+    output_path = "outputs/rag_nq_" +str(num_retrieved_docs)+ "_cad_chat_ll2_7b.json"
+    model_name = args.model_name
 
-max_seq_len = 4096
-max_ans_len_total = 64
-max_ans_len = 1
-alpha = 0.5
+    max_seq_len = args.max_seq_len
+    max_ans_len_total = args.max_gen_len
+    max_ans_len = 1
+    alpha = args.alpha
 
-tokenizer, model = get_ll2_model(model_name)
-device = "cuda"
+    tokenizer, model = get_ll2_model(model_name)
+    device = "cuda"
 
-with open(data_path, 'r') as f:
-    input_prompts = json.load(f)
-with open(full_data_path, 'r') as f:
-    full_input_prompts = json.load(f)
+    with open(data_path, 'r') as f:
+        input_prompts = json.load(f)
+    with open(full_data_path, 'r') as f:
+        full_input_prompts = json.load(f)
 
-output_prompts = []
+    output_prompts = []
 
-for cad_prompts, full_prompt in tqdm(zip(input_prompts, full_input_prompts)):
-    generated_token_accum = torch.tensor([[29871]]) # space for ll2
-    score_list = []
+    for cad_prompts, full_prompt in tqdm(zip(input_prompts, full_input_prompts)):
+        generated_token_accum = torch.tensor([[29871]]) # space for ll2
+        score_list = []
 
-    prompt, score = cad_prompts[-1] # empty
-    empty_generated_ids, _ = next_single_tok_gen(prompt, generated_token_accum, max_ans_len=max_ans_len)
-    empty_score = empty_generated_ids['scores'][0][0].cpu()
+        prompt, score = cad_prompts[-1] # empty
+        empty_generated_ids, _ = next_single_tok_gen(prompt, generated_token_accum, max_ans_len=max_ans_len)
+        empty_score = empty_generated_ids['scores'][0][0].cpu()
 
-    for prompt, score in cad_prompts[:num_retrieved_docs]:
-        generated_ids, _ = next_single_tok_gen(prompt, generated_token_accum, max_ans_len=max_ans_len)
-        cad_score = generated_ids['scores'][0][0].cpu()
-        score_list.append((1+alpha) * cad_score - alpha * empty_score)
+        for prompt, score in cad_prompts[:num_retrieved_docs]:
+            generated_ids, _ = next_single_tok_gen(prompt, generated_token_accum, max_ans_len=max_ans_len)
+            cad_score = generated_ids['scores'][0][0].cpu()
+            score_list.append((1+alpha) * cad_score - alpha * empty_score)
 
-    stacked_tensors = torch.stack(score_list)
-    score_mean = torch.mean(stacked_tensors, dim=0)
+        stacked_tensors = torch.stack(score_list)
+        score_mean = torch.mean(stacked_tensors, dim=0)
 
-    values, indices = torch.topk(score_mean, 1)
-    generated_token_accum = torch.cat([generated_token_accum,indices.unsqueeze(dim=0)], dim=1)
+        values, indices = torch.topk(score_mean, 1)
+        generated_token_accum = torch.cat([generated_token_accum,indices.unsqueeze(dim=0)], dim=1)
 
-    ### full prompt + generated token
-    generated_ids, new_tok_idx = next_full_tok_gen(full_prompt, generated_token_accum, max_ans_len=max_ans_len_total-max_ans_len)
-    generated_ans = tokenizer.decode(generated_ids[0][new_tok_idx:], skip_special_tokens=False)
-    output_prompts.append(generated_ans)
+        ### full prompt + generated token
+        generated_ids, new_tok_idx = next_full_tok_gen(full_prompt, generated_token_accum, max_ans_len=max_ans_len_total-max_ans_len)
+        generated_ans = tokenizer.decode(generated_ids[0][new_tok_idx:], skip_special_tokens=False)
+        output_prompts.append(generated_ans)
 
-with open(output_path, 'w') as f:
-    json.dump(output_prompts, f)
+    with open(output_path, 'w') as f:
+        json.dump(output_prompts, f)

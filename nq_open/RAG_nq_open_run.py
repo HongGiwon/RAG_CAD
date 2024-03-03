@@ -18,8 +18,9 @@ def get_ll2_model(model_name: str, dtype: torch.dtype = torch.bfloat16) -> Tuple
     model.eval()
     return tokenizer, model
 
-data_path = "prompts/rag_nq_5_chat.json"
-output_path = "outputs/rag_nq_5_chat_ll2_7b.json"
+num_retrieved_docs = 10
+data_path = "prompts/rag_nq_" +str(num_retrieved_docs)+ "_chat.json"
+output_path = "outputs/rag_nq_" +str(num_retrieved_docs)+ "_chat_ll2_7b.json"
 model_name = "meta-llama/Llama-2-7b-chat-hf"
 max_seq_len = 4096
 max_ans_len = 64

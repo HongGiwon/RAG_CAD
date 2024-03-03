@@ -34,12 +34,14 @@ def next_full_tok_gen(prompt, generated_token_accum, max_ans_len):
         generated_ids = model.generate(model_inputs, max_new_tokens=max_ans_len, do_sample=True)
     return generated_ids, len(model_inputs[0]) - generated_token_accum[0].shape[0]
 
-data_path = "prompts/rag_nq_5_cad_chat.json"
-full_data_path = "prompts/rag_nq_5_chat.json"
-output_path = "outputs/rag_nq_5_cad_chat_ll2_7b.json"
+num_retrieved_docs = 10
+
+data_path = "prompts/rag_nq_" +str(num_retrieved_docs)+ "_cad_chat.json"
+full_data_path = "prompts/rag_nq_" +str(num_retrieved_docs)+ "_chat.json"
+output_path = "outputs/rag_nq_" +str(num_retrieved_docs)+ "_cad_chat_ll2_7b.json"
 model_name = "meta-llama/Llama-2-7b-chat-hf"
 
-num_retrieved_docs = 5
+
 max_seq_len = 4096
 max_ans_len_total = 64
 max_ans_len = 1

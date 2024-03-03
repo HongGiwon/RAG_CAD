@@ -25,8 +25,8 @@ def get_ll2_model(model_name: str, dtype: torch.dtype = torch.bfloat16) -> Tuple
     model_kwargs['device_map'] = 'auto'
     access_token = "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"
 
-    tokenizer = AutoTokenizer.from_pretrained(model_name, resume_download=True, padding_side="left",cache_dir="/mnt/ceph_rbd/mistral7b/pretrained/", use_auth_token=access_token)
-    model = AutoModelForCausalLM.from_pretrained(model_name, resume_download=True, trust_remote_code=True,cache_dir="/mnt/ceph_rbd/mistral7b/pretrained/", use_auth_token=access_token, **model_kwargs)
+    tokenizer = AutoTokenizer.from_pretrained(model_name, cache_dir="/mnt/ceph_rbd/mistral7b/pretrained/", use_auth_token=access_token)
+    model = AutoModelForCausalLM.from_pretrained(model_name, cache_dir="/mnt/ceph_rbd/mistral7b/pretrained/", use_auth_token=access_token, **model_kwargs)
 
     model.eval()
     return tokenizer, model
@@ -42,7 +42,8 @@ if __name__ == "__main__":
     max_seq_len = args.max_seq_len
     max_ans_len = args.max_gen_len
     tokenizer, model = get_ll2_model(model_name)
-    device = "cuda"
+    #device = "cuda"
+    device = model.device
 
     with open(data_path, 'r') as f:
         input_prompts = json.load(f)

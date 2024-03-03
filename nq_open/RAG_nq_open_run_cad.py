@@ -36,16 +36,16 @@ def next_single_tok_gen(prompt, generated_token_accum, max_ans_len):
     encodeds = tokenizer.apply_chat_template(prompt, return_tensors="pt", max_length=max_seq_len)
     encodeds = torch.cat([encodeds, generated_token_accum], dim=1)
     model_inputs = encodeds.to(device)
-    with torch.inference_mode():
-        generated_ids = model.generate(model_inputs, max_new_tokens=max_ans_len, do_sample=False, return_dict_in_generate=True, output_scores = True, temperature=None, top_p=None)
+    #with torch.inference_mode():
+    generated_ids = model.generate(model_inputs, max_new_tokens=max_ans_len, do_sample=False, return_dict_in_generate=True, output_scores = True, temperature=None, top_p=None)
     return generated_ids, len(model_inputs[0]) - generated_token_accum[0].shape[0]
 
 def next_full_tok_gen(prompt, generated_token_accum, max_ans_len):
     encodeds = tokenizer.apply_chat_template(prompt, return_tensors="pt", max_length=max_seq_len)
     encodeds = torch.cat([encodeds, generated_token_accum], dim=1)
     model_inputs = encodeds.to(device)
-    with torch.inference_mode():
-        generated_ids = model.generate(model_inputs, max_new_tokens=max_ans_len, do_sample=True)
+    #with torch.inference_mode():
+    generated_ids = model.generate(model_inputs, max_new_tokens=max_ans_len, do_sample=True)
     return generated_ids, len(model_inputs[0]) - generated_token_accum[0].shape[0]
 
 if __name__ == "__main__":
@@ -64,7 +64,8 @@ if __name__ == "__main__":
     alpha = args.alpha
 
     tokenizer, model = get_ll2_model(model_name)
-    device = "cuda"
+    #device = "cuda"
+    device = model.device
 
     with open(data_path, 'r') as f:
         input_prompts = json.load(f)

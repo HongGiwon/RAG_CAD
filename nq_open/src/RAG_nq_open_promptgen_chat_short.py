@@ -39,8 +39,9 @@ def gen_prompt(input_data, num_retrieved_docs):
 
 
 num_retrieved_docs = 5
-data_path = '../download/nq-open-10_total_documents_gold_at_0.jsonl.gz'
-output_path = '../prompts/rag_nq_' + str(num_retrieved_docs) + '_chat_short.json'
+ans_pos = 4
+data_path = '../download/nq-open-10_total_documents_gold_at_' + str(ans_pos) + '.jsonl.gz'
+output_path = '../prompts/rag_nq_' + str(num_retrieved_docs) + '_chat_short_' + str(ans_pos) + '.json'
 
 prompt_list = []
 

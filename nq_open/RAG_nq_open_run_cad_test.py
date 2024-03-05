@@ -15,6 +15,7 @@ def parse_args():
     parser.add_argument("--max_seq_len", type=int, default=4096, help="max seq len")
     parser.add_argument("--max_gen_len", type=int, default=64, help="max gen len")
     parser.add_argument("--num_retrieved_docs", type=int, default=5, help="num_of_retrieved_docs")
+    parser.add_argument("--ans_pos", type=int, default=0, help="ans_pos")
     parser.add_argument("--alpha", type=float, default=0.5, help="cad alpha")
 
     args = parser.parse_args()
@@ -52,10 +53,11 @@ if __name__ == "__main__":
     args = parse_args()
 
     num_retrieved_docs = args.num_retrieved_docs
+    ans_pos = args.ans_pos
 
-    data_path = "prompts/rag_nq_" +str(num_retrieved_docs)+ "_cad_chat_short.json"
-    full_data_path = "prompts/rag_nq_" +str(num_retrieved_docs)+ "_chat.json"
-    output_path = "outputs/rag_nq_" +str(num_retrieved_docs)+ "_cad_" + args.model_name.split("/")[-1] + "_short.json"
+    data_path = "prompts/rag_nq_" +str(num_retrieved_docs)+ "_cad_chat_short_" + str(ans_pos) + ".json"
+    full_data_path = "prompts/rag_nq_" +str(num_retrieved_docs)+ "_chat_short_" + str(ans_pos) + ".json"
+    output_path = "outputs/rag_nq_" +str(num_retrieved_docs)+ "_cad_" + args.model_name.split("/")[-1] + "_short_" + str(ans_pos) + ".json"
     model_name = args.model_name
 
     max_seq_len = args.max_seq_len

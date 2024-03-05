@@ -10,14 +10,13 @@ output_paths = [
     '../outputs/rag_nq_5_cad_Llama-2-13b-chat-hf_short.json'
 ]
 
+short_answer_list = []
 with gzip.open(data_path, 'rb') as f:
         for line in f:
             data = json.loads(line)
             short_answer_list.append(data['answers'])
 
 for output_path in output_paths:
-    short_answer_list = []
-    
     with open(output_path, 'r') as f:
         output = json.load(f)
     

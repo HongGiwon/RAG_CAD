@@ -1,7 +1,7 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: gw-rag-cad-original
+  name: gw-rag-cad-original-2
   labels: 
     eidf/user: s2523062-infk8s
     kueue.x-k8s.io/queue-name: eidf097ns-user-queue

@@ -4,6 +4,7 @@ metadata:
   name: gw-rag-cad-original-cpu
   labels: 
     eidf/user: s2523062-infk8s
+    kueue.x-k8s.io/queue-name: eidf097ns-user-queue
   annotations: 
       eidf/email: s2523062@ed.ac.uk
       eidf/user: s2523062-infk8s
@@ -32,11 +33,11 @@ spec:
           name: volume
         resources:
           requests:
-            cpu: 8
-            memory: "80Gi"
+            cpu: 1
+            memory: "40Gi"
           limits:
-            cpu: 8
-            memory: "80Gi"
+            cpu: 1
+            memory: "40Gi"
       volumes:
       - name: volume
         persistentVolumeClaim:

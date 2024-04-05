@@ -1,0 +1,54 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: gw-rag-cad-original
+  labels: 
+    eidf/user: s2523062-infk8s
+    kueue.x-k8s.io/queue-name: informatics-user-queue
+  annotations: 
+      eidf/email: s2523062@ed.ac.uk
+      eidf/user: s2523062-infk8s
+spec:
+  backoffLimit: 0
+  template:
+    metadata:
+        labels: 
+          eidf/user: s2523062-infk8s
+        annotations: 
+            eidf/email: s2523062@ed.ac.uk
+            eidf/user: s2523062-infk8s
+    spec:
+      restartPolicy: Never
+      containers:
+      - name: pytorch-con
+        image: pytorch/pytorch:2.0.1-cuda11.7-cudnn8-devel
+        command: ["/bin/sh","-c"]
+        args:
+        - |
+          apt update -y --fix-missing;
+          apt install -y git;
+          pip install torch;
+          pip install transformers==4.35.2 tokenizers==0.15.1 huggingface_hub accelerate datasets bitsandbytes;
+          pip install flash-attn==2.3.1.post1 --no-build-isolation;
+          pip install jsonlines sentencepiece;
+          cd /mnt/ceph_rbd/RAG_CAD/nq_open;
+          python RAG_nq_open_run_cad_test_all.py --model_name meta-llama/Llama-2-7b-chat-hf --num_retrieved_docs 5 --ans_pos 0;
+          python RAG_nq_open_run_cad_test_all.py --model_name meta-llama/Llama-2-7b-chat-hf --num_retrieved_docs 5 --ans_pos 4;
+          python RAG_nq_open_run_cad_test_all.py --model_name meta-llama/Llama-2-7b-chat-hf --num_retrieved_docs 5 --ans_pos 9;
+        volumeMounts:
+        - mountPath: /mnt/ceph_rbd
+          name: volume
+        resources:
+          requests:
+            cpu: 8
+            memory: "80Gi"
+          limits:
+            cpu: 8
+            memory: "80Gi"
+            nvidia.com/gpu: 1
+      nodeSelector:
+        nvidia.com/gpu.product: NVIDIA-A100-SXM4-40GB
+      volumes:
+      - name: volume
+        persistentVolumeClaim:
+          claimName: gw-pv-hf

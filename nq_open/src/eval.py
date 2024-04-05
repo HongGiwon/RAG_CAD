@@ -5,9 +5,17 @@ data_path = '../download/nq-open-10_total_documents_gold_at_0.jsonl.gz'
 
 output_paths = [
     '../outputs/rag_nq_5_Llama-2-7b-chat-hf_short.json',
+    '../outputs/rag_nq_5_Llama-2-7b-chat-hf_short_4.json',
+    '../outputs/rag_nq_5_Llama-2-7b-chat-hf_short_9.json',
     '../outputs/rag_nq_5_Llama-2-13b-chat-hf_short.json',
+    '../outputs/rag_nq_5_Llama-2-13b-chat-hf_short_4.json',
+    '../outputs/rag_nq_5_Llama-2-13b-chat-hf_short_9.json',
     '../outputs/rag_nq_5_cad_Llama-2-7b-chat-hf_short.json',
-    '../outputs/rag_nq_5_cad_Llama-2-13b-chat-hf_short.json'
+    '../outputs/rag_nq_5_cad_Llama-2-7b-chat-hf_short_4.json',
+    '../outputs/rag_nq_5_cad_Llama-2-7b-chat-hf_short_9.json',
+    '../outputs/rag_nq_5_cad_Llama-2-13b-chat-hf_short.json',
+    '../outputs/rag_nq_5_cad_Llama-2-13b-chat-hf_short_4.json',
+    '../outputs/rag_nq_5_cad_Llama-2-13b-chat-hf_short_9.json',
 ]
 
 short_answer_list = []
@@ -29,4 +37,4 @@ for output_path in output_paths:
                 break
         em_include += int(ans_flag)
     
-    print(em_include/len(output))
+    print(round(em_include/len(output) * 100, 2))

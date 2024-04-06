@@ -32,9 +32,7 @@ spec:
           pip install flash-attn==2.3.1.post1 --no-build-isolation;
           pip install jsonlines sentencepiece;
           cd /mnt/ceph_rbd/RAG_CAD/nq_open;
-          python RAG_nq_open_run_cad_test_all.py --model_name meta-llama/Llama-2-7b-chat-hf --num_retrieved_docs 5 --ans_pos 0;
-          python RAG_nq_open_run_cad_test_all.py --model_name meta-llama/Llama-2-7b-chat-hf --num_retrieved_docs 5 --ans_pos 4;
-          python RAG_nq_open_run_cad_test_all.py --model_name meta-llama/Llama-2-7b-chat-hf --num_retrieved_docs 5 --ans_pos 9;
+          python RAG_nq_open_run_cad_test_all.py --model_name meta-llama/Llama-2-7b-chat-hf --num_retrieved_docs 10 --ans_pos 4;
         volumeMounts:
         - mountPath: /mnt/ceph_rbd
           name: volume

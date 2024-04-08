@@ -13,7 +13,7 @@ def parse_args():
     parser.add_argument("--model_name", type=str, default="meta-llama/Llama-2-70b-chat-hf",
                         help="Name of pretrained model")
     parser.add_argument("--max_seq_len", type=int, default=4096, help="max seq len")
-    parser.add_argument("--max_gen_len", type=int, default=64, help="max gen len")
+    parser.add_argument("--max_gen_len", type=int, default=32, help="max gen len")
     parser.add_argument("--num_retrieved_docs", type=int, default=5, help="num_of_retrieved_docs")
     parser.add_argument("--ans_pos", type=int, default=0, help="ans_pos")
     parser.add_argument("--alpha", type=float, default=0.5, help="cad alpha")

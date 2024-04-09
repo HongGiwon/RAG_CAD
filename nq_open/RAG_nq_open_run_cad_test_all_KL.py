@@ -96,7 +96,11 @@ if __name__ == "__main__":
             
             kl_divs = torch.tensor([torch.sum(tensor * torch.log(tensor / empty_score)) for tensor in score_list])
             weights = kl_divs / kl_divs.sum()
-            weighted_sum = torch.sum(stacked_tensors * weights.unsqueeze(1), dim=0)
+            # weighted_sum = torch.sum(stacked_tensors * weights.unsqueeze(1), dim=0)
+
+            weighted_sum = torch.zeros_like(empty_score)
+            for tensor, weight in zip(score_list, weights):
+                weighted_sum += tensor * weight
             
             values, indices = torch.topk(weighted_sum, 1)
             generated_token_accum = torch.cat([generated_token_accum,indices.unsqueeze(dim=0)], dim=1)

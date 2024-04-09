@@ -43,8 +43,8 @@ def gen_prompt_single(input_data, target_doc_id):
     return prompt
 
 
-num_retrieved_docs = 10
-ans_pos = 4
+num_retrieved_docs = 1
+ans_pos = 0
 data_path = '../download/nq-open-10_total_documents_gold_at_' + str(ans_pos) + '.jsonl.gz'
 output_path = '../prompts/rag_nq_' + str(num_retrieved_docs) + '_cad_chat_short_' + str(ans_pos) + '.json'
 

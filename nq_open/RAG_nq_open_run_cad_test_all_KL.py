@@ -80,11 +80,11 @@ if __name__ == "__main__":
     for cad_prompts, full_prompt in tqdm(zip(input_prompts, full_input_prompts)):
         generated_token_accum = torch.tensor([[29871]]) # space for ll2
 
-        prompt, score = cad_prompts[-1] # empty
-        empty_generated_ids, _ = next_single_tok_gen(prompt, generated_token_accum, max_ans_len=max_ans_len)
-        empty_score = softmax_weight(empty_generated_ids['scores'][0][0].cpu())
+        empty_prompt, score = cad_prompts[-1] # empty
 
         for iter_gen in range(max_ans_len_total):
+            empty_generated_ids, _ = next_single_tok_gen(empty_prompt, generated_token_accum, max_ans_len=max_ans_len)
+            empty_score = softmax_weight(empty_generated_ids['scores'][0][0].cpu())
             score_list = []
         
             for prompt, score in cad_prompts[:num_retrieved_docs]:

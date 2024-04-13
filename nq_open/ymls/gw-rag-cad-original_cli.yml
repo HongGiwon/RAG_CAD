@@ -32,17 +32,18 @@ spec:
           pip install flash-attn==2.3.1.post1 --no-build-isolation;
           pip install jsonlines sentencepiece;
           cd /mnt/ceph_rbd/RAG_CAD/nq_open;
-          python RAG_nq_open_run_cad_test_all.py --model_name meta-llama/Llama-2-7b-chat-hf --num_retrieved_docs 10 --ans_pos 4;
+          export OMP_NUM_THREADS=8;
+          python RAG_nq_open_run_cad_test_all_KL.py --model_name meta-llama/Llama-2-7b-chat-hf --num_retrieved_docs 10 --ans_pos 4 --max_gen_len 32;
         volumeMounts:
         - mountPath: /mnt/ceph_rbd
           name: volume
         resources:
           requests:
-            cpu: 8
-            memory: "80Gi"
+            cpu: 16
+            memory: "160Gi"
           limits:
-            cpu: 8
-            memory: "80Gi"
+            cpu: 16
+            memory: "160Gi"
             nvidia.com/gpu: 1
       nodeSelector:
         nvidia.com/gpu.product: NVIDIA-A100-SXM4-40GB

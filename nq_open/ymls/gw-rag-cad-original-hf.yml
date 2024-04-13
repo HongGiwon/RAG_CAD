@@ -1,0 +1,51 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: gw-rag-cad-original-hf
+  labels: 
+    eidf/user: s2523062-infk8s
+    kueue.x-k8s.io/queue-name: eidf097ns-user-queue
+  annotations: 
+      eidf/email: s2523062@ed.ac.uk
+      eidf/user: s2523062-infk8s
+spec:
+  backoffLimit: 0
+  template:
+    metadata:
+        labels: 
+          eidf/user: s2523062-infk8s
+        annotations: 
+            eidf/email: s2523062@ed.ac.uk
+            eidf/user: s2523062-infk8s
+    spec:
+      restartPolicy: Never
+      containers:
+      - name: pytorch-con
+        image: pytorch/pytorch:2.0.1-cuda11.7-cudnn8-devel
+        command: ["/bin/sh","-c"]
+        args:
+        - |
+          apt update -y --fix-missing;
+          apt install -y git;
+          pip install --root-user-action=ignore torch;
+          pip install --root-user-action=ignore transformers==4.35.2 tokenizers==0.15.1 huggingface_hub accelerate datasets bitsandbytes;
+          pip install --root-user-action=ignore flash-attn==2.3.1.post1 --no-build-isolation;
+          pip install --root-user-action=ignore jsonlines sentencepiece;
+          sleep infinity;
+        volumeMounts:
+        - mountPath: /mnt/ceph_rbd
+          name: volume
+        resources:
+          requests:
+            cpu: 16
+            memory: "160Gi"
+          limits:
+            cpu: 16
+            memory: "160Gi"
+            nvidia.com/gpu: 1
+      nodeSelector:
+        nvidia.com/gpu.product: NVIDIA-A100-SXM4-40GB
+      volumes:
+      - name: volume
+        persistentVolumeClaim:
+          claimName: gw-pv-hf

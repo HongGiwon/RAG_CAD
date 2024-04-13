@@ -57,7 +57,7 @@ if __name__ == "__main__":
 
     data_path = "prompts/rag_nq_" +str(num_retrieved_docs)+ "_cad_chat_short_" + str(ans_pos) + ".json"
     full_data_path = "prompts/rag_nq_" +str(num_retrieved_docs)+ "_chat_short_" + str(ans_pos) + ".json"
-    output_path = "outputs/rag_nq_" +str(num_retrieved_docs)+ "_cad_" + args.model_name.split("/")[-1] + "_short_" + str(ans_pos) + "_cadall_kl_weight1.json"
+    output_path = "outputs/rag_nq_" +str(num_retrieved_docs)+ "_cad_" + args.model_name.split("/")[-1] + "_short_" + str(ans_pos) + "_cadall_kl_weight1_reverse.json"
     model_name = args.model_name
 
     max_seq_len = args.max_seq_len
@@ -100,8 +100,8 @@ if __name__ == "__main__":
 
             weighted_sum = torch.zeros_like(empty_score)
             for tensor, weight in zip(score_list, weights):
-                #weighted_sum += tensor * weight
-                weighted_sum += tensor * 1
+                weighted_sum += tensor * (1 / weight)
+                #weighted_sum += tensor * 1
             
             values, indices = torch.topk(weighted_sum, 1)
             generated_token_accum = torch.cat([generated_token_accum,indices.unsqueeze(dim=0)], dim=1)

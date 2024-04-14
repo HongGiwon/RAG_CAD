@@ -29,6 +29,7 @@ output_paths = [
     '../outputs/rag_nq_10_cad_Llama-2-7b-chat-hf_short_9.json',
     '../outputs/rag_nq_10_cad_Llama-2-7b-chat-hf_short_4_cadall.json',
     '../outputs/rag_nq_10_cad_Llama-2-7b-chat-hf_short_4_cadall_kl.json',
+    '../outputs/rag_nq_10_cad_Llama-2-7b-chat-hf_short_4_cadall_kl_weight1.json',
 ]
 
 short_answer_list = []

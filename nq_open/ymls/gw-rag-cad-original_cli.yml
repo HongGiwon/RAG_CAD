@@ -33,7 +33,7 @@ spec:
           pip install jsonlines sentencepiece;
           cd /mnt/ceph_rbd/RAG_CAD/nq_open;
           export OMP_NUM_THREADS=8;
-          python RAG_nq_open_run_cad_test_all_KL.py --model_name meta-llama/Llama-2-7b-chat-hf --num_retrieved_docs 10 --ans_pos 4 --max_gen_len 32;
+          python RAG_nq_open_run_cad_test_all_KL_keepcad.py --model_name meta-llama/Llama-2-7b-chat-hf --num_retrieved_docs 10 --ans_pos 4 --max_gen_len 32;
         volumeMounts:
         - mountPath: /mnt/ceph_rbd
           name: volume

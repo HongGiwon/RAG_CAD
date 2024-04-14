@@ -98,8 +98,11 @@ if __name__ == "__main__":
 
             stacked_tensors = torch.stack(score_list)
             
-            kl_divs = torch.tensor([1/(torch.sum(tensor * torch.log(tensor / full_score))) for tensor in score_list])
-            weights = kl_divs / kl_divs.sum()
+            kl_divs = torch.tensor([torch.sum(tensor * torch.log(tensor / full_score)) for tensor in score_list])
+            weights = 1.0 / (kl_divs)
+            weights /= weights.sum()
+
+            #weights = kl_divs / kl_divs.sum()
             # weighted_sum = torch.sum(stacked_tensors * weights.unsqueeze(1), dim=0)
 
             weighted_sum = torch.zeros_like(empty_score)

@@ -57,7 +57,7 @@ if __name__ == "__main__":
 
     data_path = "prompts/rag_nq_" +str(num_retrieved_docs)+ "_cad_chat_short_" + str(ans_pos) + ".json"
     full_data_path = "prompts/rag_nq_" +str(num_retrieved_docs)+ "_chat_short_" + str(ans_pos) + ".json"
-    output_path = "outputs/rag_nq_" +str(num_retrieved_docs)+ "_cad_" + args.model_name.split("/")[-1] + "_short_" + str(ans_pos) + "_cadall_kl_keep_cad.json"
+    output_path = "outputs/rag_nq_" +str(num_retrieved_docs)+ "_cad_" + args.model_name.split("/")[-1] + "_short_" + str(ans_pos) + "_cadall_kl_keep_cad_reverse.json"
     model_name = args.model_name
 
     max_seq_len = args.max_seq_len
@@ -95,7 +95,10 @@ if __name__ == "__main__":
             stacked_tensors = torch.stack(score_list)
             
             kl_divs = torch.tensor([torch.sum(tensor * torch.log(tensor / empty_score)) for tensor in score_list])
-            weights = kl_divs / kl_divs.sum()
+            weights = 1.0 / (kl_divs)
+            weights /= weights.sum()
+            
+            #weights = kl_divs / kl_divs.sum()
             # weighted_sum = torch.sum(stacked_tensors * weights.unsqueeze(1), dim=0)
 
             weighted_sum = torch.zeros_like(empty_score)

@@ -92,7 +92,7 @@ if __name__ == "__main__":
                 cad_score = generated_ids['scores'][0][0].cpu()
                 score_list.append(softmax_weight(cad_score))
 
-            stacked_tensors = torch.stack(score_list)
+            #stacked_tensors = torch.stack(score_list)
             
             kl_divs = torch.tensor([torch.sum(tensor * torch.log(tensor / empty_score)) for tensor in score_list])
             weights = 1.0 / (kl_divs)

@@ -7,6 +7,17 @@ import pickle
 import json
 import argparse
 
+import torch
+
+def kurtosis(x):
+    mean = x.mean()
+    deviations = x - mean
+    var = torch.mean(deviations ** 2)
+    std = torch.sqrt(var)
+    
+    kurt = torch.mean((deviations / std) ** 4) - 3
+    return kurt + 3
+
 def parse_args():
     parser = argparse.ArgumentParser()
 
@@ -57,7 +68,7 @@ if __name__ == "__main__":
 
     data_path = "prompts/rag_nq_" +str(num_retrieved_docs)+ "_cad_chat_short_" + str(ans_pos) + ".json"
     full_data_path = "prompts/rag_nq_" +str(num_retrieved_docs)+ "_chat_short_" + str(ans_pos) + ".json"
-    output_path = "outputs/rag_nq_" +str(num_retrieved_docs)+ "_cad_" + args.model_name.split("/")[-1] + "_short_" + str(ans_pos) + "_cadall_kl_weight1_reverse.json"
+    output_path = "outputs/rag_nq_" +str(num_retrieved_docs)+ "_cad_" + args.model_name.split("/")[-1] + "_short_" + str(ans_pos) + "_cadall_ku.json"
     model_name = args.model_name
 
     max_seq_len = args.max_seq_len
@@ -94,22 +105,16 @@ if __name__ == "__main__":
 
             #stacked_tensors = torch.stack(score_list)
             
-            kl_divs = torch.tensor([torch.sum(tensor * torch.log(tensor / empty_score)) for tensor in score_list])
-            weights = kl_divs / kl_divs.sum()
-            # weighted_sum = torch.sum(stacked_tensors * weights.unsqueeze(1), dim=0)
+            kurtosis_scores = torch.tensor([kurtosis(tensor) for tensor in score_list])
+            weights = kurtosis_scores / kurtosis_scores.sum()
 
             weighted_sum = torch.zeros_like(empty_score)
             for tensor, weight in zip(score_list, weights):
-                weighted_sum += tensor * (1 / weight)
-                #weighted_sum += tensor * 1
+                weighted_sum += tensor * weight
             
             values, indices = torch.topk(weighted_sum, 1)
             generated_token_accum = torch.cat([generated_token_accum,indices.unsqueeze(dim=0)], dim=1)
 
-        ### full prompt + generated token
-        # generated_ids, new_tok_idx = next_full_tok_gen(full_prompt, generated_token_accum, max_ans_len=max_ans_len_total-max_ans_len)
-        #generated_ans = tokenizer.decode(generated_ids[0][new_tok_idx:], skip_special_tokens=False) #generated_ids is dict for single_tok_gen
-        #output_prompts.append(generated_ans)
         generated_ans = tokenizer.decode(generated_token_accum[0], skip_special_tokens=False)
         output_prompts.append(generated_ans)
 

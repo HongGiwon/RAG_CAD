@@ -35,6 +35,10 @@ output_paths = [
     '../outputs/rag_nq_10_cad_Llama-2-7b-chat-hf_short_4_cadall_kl_keep_cad_reverse.json',
     '../outputs/rag_nq_10_cad_Llama-2-7b-chat-hf_short_4_cadall_kl_keep_cad_fulldiff.json',
     '../outputs/rag_nq_10_cad_Llama-2-7b-chat-hf_short_4_cadall_kl_keep_cad_fulldiff_sf.json',
+    '../outputs/rag_nq_10_cad_Llama-2-7b-chat-hf_short_4_cadall_ku.json',
+    '../outputs/rag_nq_10_cad_Llama-2-7b-chat-hf_short_4_cadall_ku_reverse.json',
+    '../outputs/rag_nq_10_cad_Llama-2-7b-chat-hf_short_4_cadall_ku_sf.json',
+    '../outputs/rag_nq_10_cad_Meta-Llama-3-8B-Instruct_short_4_cadall_ku_sf.json',
 ]
 
 short_answer_list = []

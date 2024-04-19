@@ -68,6 +68,8 @@ if __name__ == "__main__":
     tokenizer, model = get_ll2_model(model_name)
     #device = "cuda"
     device = model.device
+    space_tok_id = tokenizer.convert_tokens_to_ids(tokenizer.tokenize(": "))[-1]
+    model.generation_config.pad_token_id = model.generation_config.eos_token_id
 
     with open(data_path, 'r') as f:
         input_prompts = json.load(f)
@@ -77,7 +79,7 @@ if __name__ == "__main__":
     output_prompts = []
 
     for cad_prompts, full_prompt in tqdm(zip(input_prompts, full_input_prompts)):
-        generated_token_accum = torch.tensor([[29871]]) # space for ll2
+        generated_token_accum = torch.tensor([[space_tok_id]]) # space for ll2
 
         prompt, score = cad_prompts[-1] # empty
         empty_generated_ids, _ = next_single_tok_gen(prompt, generated_token_accum, max_ans_len=max_ans_len)

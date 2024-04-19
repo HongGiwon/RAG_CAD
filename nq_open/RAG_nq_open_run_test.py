@@ -47,7 +47,7 @@ if __name__ == "__main__":
     tokenizer, model = get_ll2_model(model_name)
     #device = "cuda"
     device = model.device
-    model.generation_config.pad_token_id = model.generation_config.eos_token_id
+    #model.generation_config.pad_token_id = model.generation_config.eos_token_id
 
     with open(data_path, 'r') as f:
         input_prompts = json.load(f)

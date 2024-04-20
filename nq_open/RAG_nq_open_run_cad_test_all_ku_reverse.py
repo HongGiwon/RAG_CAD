@@ -82,6 +82,7 @@ if __name__ == "__main__":
     space_tok_id = tokenizer.convert_tokens_to_ids(tokenizer.tokenize(": "))[-1]
     #model.generation_config.pad_token_id = model.generation_config.eos_token_id
     tokenizer.pad_token = tokenizer.pad_token or tokenizer.eos_token
+    tokenizer.pad_token_id = tokenizer.pad_token_id or tokenizer.eos_token_id
 
     with open(data_path, 'r') as f:
         input_prompts = json.load(f)

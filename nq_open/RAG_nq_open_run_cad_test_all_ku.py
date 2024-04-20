@@ -80,7 +80,7 @@ if __name__ == "__main__":
     #device = "cuda"
     device = model.device
     space_tok_id = tokenizer.convert_tokens_to_ids(tokenizer.tokenize(": "))[-1]
-    model.generation_config.pad_token_id = model.generation_config.eos_token_id
+    model.generation_config.pad_token_id = model.generation_config.pad_token_id or tokenizer.eos_token_id ## for llama3
 
     with open(data_path, 'r') as f:
         input_prompts = json.load(f)

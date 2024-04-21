@@ -112,12 +112,12 @@ if __name__ == "__main__":
             print(kurtosis_scores)
             weights = torch.softmax(kurtosis_scores / temperature, dim=0)
             print(weights)
-            # weighted_sum = torch.zeros_like(empty_score)
-            # for tensor, weight in zip(score_list, weights):
-            #     weighted_sum += tensor * weight
+            weighted_sum = torch.zeros_like(empty_score)
+            for tensor, weight in zip(score_list, weights):
+                weighted_sum += tensor * weight
             
-            # values, indices = torch.topk(weighted_sum, 1)
-            # generated_token_accum = torch.cat([generated_token_accum,indices.unsqueeze(dim=0)], dim=1)
+            values, indices = torch.topk(weighted_sum, 1)
+            generated_token_accum = torch.cat([generated_token_accum,indices.unsqueeze(dim=0)], dim=1)
 
         break
         # generated_ans = tokenizer.decode(generated_token_accum[0], skip_special_tokens=False)

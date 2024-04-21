@@ -109,6 +109,7 @@ if __name__ == "__main__":
             #stacked_tensors = torch.stack(score_list)
             
             kurtosis_scores = torch.tensor([kurtosis(tensor) for tensor in score_list])
+            print(kurtosis_scores)
             weights = torch.softmax(kurtosis_scores / temperature, dim=0)
             print(weights)
             # weighted_sum = torch.zeros_like(empty_score)

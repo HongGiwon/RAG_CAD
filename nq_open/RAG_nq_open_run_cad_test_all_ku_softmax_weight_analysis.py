@@ -80,7 +80,7 @@ if __name__ == "__main__":
     max_ans_len_total = args.max_gen_len
     max_ans_len = 1
     alpha = args.alpha
-    temperature = 0.1
+    temperature = 0.05
     top_k = 5
 
     tokenizer, model = get_ll2_model(model_name)
@@ -126,7 +126,7 @@ if __name__ == "__main__":
             
             values, indices = torch.topk(weighted_sum, 1)
             generated_token_accum = torch.cat([generated_token_accum,indices.unsqueeze(dim=0)], dim=1)
-            
+
         break
         # generated_ans = tokenizer.decode(generated_token_accum[0], skip_special_tokens=False)
         # output_prompts.append(generated_ans)

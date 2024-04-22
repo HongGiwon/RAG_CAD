@@ -11,6 +11,7 @@ import torch
 
 def top_k_portion(x, k=10):
     values, indices = torch.topk(x, k)
+    print(values)
     return values
 
 def kurtosis(x):
@@ -115,7 +116,7 @@ if __name__ == "__main__":
             
             #kurtosis_scores = torch.tensor([kurtosis(tensor) for tensor in score_list])
             top_k_portion_scores = torch.tensor([top_k_portion(tensor) for tensor in score_list])
-            print(top_k_portion_scores)
+
             weights = torch.softmax(kurtosis_scores / temperature, dim=0)
             weighted_sum = torch.zeros_like(empty_score)
             for tensor, weight in zip(score_list, weights):

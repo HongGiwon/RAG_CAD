@@ -78,7 +78,7 @@ if __name__ == "__main__":
 
     data_path = "prompts/rag_nq_" +str(num_retrieved_docs)+ "_cad_chat_short_" + str(ans_pos) + ".json"
     full_data_path = "prompts/rag_nq_" +str(num_retrieved_docs)+ "_chat_short_" + str(ans_pos) + ".json"
-    output_path = "outputs/rag_nq_" +str(num_retrieved_docs)+ "_" + args.model_name.split("/")[-1] + "_short_" + str(ans_pos) + "_topkportion_sf_" + str(temperature) +"_" + str(topk) +".json"
+    output_path = "outputs/rag_nq_" +str(num_retrieved_docs)+ "_" + args.model_name.split("/")[-1] + "_short_" + str(ans_pos) + "_topkportion_sf_" + str(temperature) +"_" + str(top_k) +".json"
     model_name = args.model_name
 
     max_seq_len = args.max_seq_len

@@ -11,9 +11,7 @@ import torch
 
 def top_k_portion(x, k):
     values, indices = torch.topk(x, k)
-    print(values)
-    print(values.sum())
-    return values
+    return values.sum()
 
 def kurtosis(x):
     # mean = x.mean()
@@ -117,16 +115,18 @@ if __name__ == "__main__":
             #stacked_tensors = torch.stack(score_list)
             
             #kurtosis_scores = torch.tensor([kurtosis(tensor) for tensor in score_list])
+            #weights = torch.softmax(kurtosis_scores / temperature, dim=0)
             top_k_portion_scores = torch.tensor([top_k_portion(tensor, top_k) for tensor in score_list])
+            weights = torch.softmax(top_k_portion_scores / temperature, dim=0)
+            print(weights)
 
-            weights = torch.softmax(kurtosis_scores / temperature, dim=0)
             weighted_sum = torch.zeros_like(empty_score)
             for tensor, weight in zip(score_list, weights):
                 weighted_sum += tensor * weight
             
             values, indices = torch.topk(weighted_sum, 1)
             generated_token_accum = torch.cat([generated_token_accum,indices.unsqueeze(dim=0)], dim=1)
-            break
+            
         break
         # generated_ans = tokenizer.decode(generated_token_accum[0], skip_special_tokens=False)
         # output_prompts.append(generated_ans)

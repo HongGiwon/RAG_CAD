@@ -12,14 +12,12 @@ import torch
 def kurtosis(x):
     mean = x.mean()
     deviations = x - mean
-    var = torch.mean(deviations ** 2)
-    std = torch.sqrt(var)
+    std = torch.std(x, unbiased=True)
     
     kurt = torch.mean((deviations / std) ** 4) - 3
 
     print(mean)
     print(deviations)
-    print(var)
     print(std)
     print(kurt)
     return kurt + 3

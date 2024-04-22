@@ -16,11 +16,13 @@ def kurtosis(x):
     
     kurt = torch.mean((deviations / std) ** 4) - 3
 
-    print(mean)
-    print(deviations)
-    print(std)
+    # print(mean)
+    # print(deviations)
+    # print(std)
     print((deviations / std))
-    print(kurt)
+    values, indices = torch.topk((deviations / std), 10)
+    print(values)
+    # print(kurt)
     return kurt + 3
 
 def parse_args():

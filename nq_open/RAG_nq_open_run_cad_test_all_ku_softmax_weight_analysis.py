@@ -80,7 +80,7 @@ if __name__ == "__main__":
     max_ans_len_total = args.max_gen_len
     max_ans_len = 1
     alpha = args.alpha
-    temperature = 0.05
+    temperature = 0.8
     top_k = 5
 
     tokenizer, model = get_ll2_model(model_name)

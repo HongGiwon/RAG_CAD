@@ -16,6 +16,12 @@ def kurtosis(x):
     std = torch.sqrt(var)
     
     kurt = torch.mean((deviations / std) ** 4) - 3
+
+    print(mean)
+    print(deviations)
+    print(var)
+    print(std)
+    print(kurt)
     return kurt + 3
 
 def parse_args():
@@ -118,7 +124,7 @@ if __name__ == "__main__":
             
             values, indices = torch.topk(weighted_sum, 1)
             generated_token_accum = torch.cat([generated_token_accum,indices.unsqueeze(dim=0)], dim=1)
-
+            break
         break
         # generated_ans = tokenizer.decode(generated_token_accum[0], skip_special_tokens=False)
         # output_prompts.append(generated_ans)

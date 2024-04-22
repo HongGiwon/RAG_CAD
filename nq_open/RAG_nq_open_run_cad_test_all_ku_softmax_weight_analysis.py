@@ -9,9 +9,10 @@ import argparse
 
 import torch
 
-def top_k_portion(x, k=10):
+def top_k_portion(x, k):
     values, indices = torch.topk(x, k)
     print(values)
+    print(values.sum())
     return values
 
 def kurtosis(x):
@@ -82,6 +83,7 @@ if __name__ == "__main__":
     max_ans_len = 1
     alpha = args.alpha
     temperature = 0.1
+    top_k = 5
 
     tokenizer, model = get_ll2_model(model_name)
     #device = "cuda"
@@ -115,7 +117,7 @@ if __name__ == "__main__":
             #stacked_tensors = torch.stack(score_list)
             
             #kurtosis_scores = torch.tensor([kurtosis(tensor) for tensor in score_list])
-            top_k_portion_scores = torch.tensor([top_k_portion(tensor) for tensor in score_list])
+            top_k_portion_scores = torch.tensor([top_k_portion(tensor, top_k) for tensor in score_list])
 
             weights = torch.softmax(kurtosis_scores / temperature, dim=0)
             weighted_sum = torch.zeros_like(empty_score)

@@ -19,6 +19,7 @@ def kurtosis(x):
     print(mean)
     print(deviations)
     print(std)
+    print((deviations / std))
     print(kurt)
     return kurt + 3
 

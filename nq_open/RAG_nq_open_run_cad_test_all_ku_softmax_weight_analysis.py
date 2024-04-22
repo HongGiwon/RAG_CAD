@@ -10,8 +10,10 @@ import argparse
 import torch
 
 def kurtosis(x):
-    mean = x.mean()
-    deviations = x - mean
+    # mean = x.mean()
+    # deviations = x - mean
+    median = torch.median(x)
+    deviations = x - median
     std = torch.std(x, unbiased=True)
     
     kurt = torch.mean((deviations / std) ** 4) - 3

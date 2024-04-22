@@ -33,6 +33,8 @@ def parse_args():
     parser.add_argument("--num_retrieved_docs", type=int, default=5, help="num_of_retrieved_docs")
     parser.add_argument("--ans_pos", type=int, default=0, help="ans_pos")
     parser.add_argument("--alpha", type=float, default=0.5, help="cad alpha")
+    parser.add_argument("--temp", type=float, default=0.01, help="temperature")
+    parser.add_argument("--topk", type=int, default=5, help="topk portion")
 
     args = parser.parse_args()
     return args
@@ -73,15 +75,15 @@ if __name__ == "__main__":
 
     data_path = "prompts/rag_nq_" +str(num_retrieved_docs)+ "_cad_chat_short_" + str(ans_pos) + ".json"
     full_data_path = "prompts/rag_nq_" +str(num_retrieved_docs)+ "_chat_short_" + str(ans_pos) + ".json"
-    output_path = "outputs/rag_nq_" +str(num_retrieved_docs)+ "_cad_" + args.model_name.split("/")[-1] + "_short_" + str(ans_pos) + "_topkportion_sf.json"
+    output_path = "outputs/rag_nq_" +str(num_retrieved_docs)+ "_" + args.model_name.split("/")[-1] + "_short_" + str(ans_pos) + "_topkportion_sf_" + str(temp) +"_" + str(topk) +".json"
     model_name = args.model_name
 
     max_seq_len = args.max_seq_len
     max_ans_len_total = args.max_gen_len
     max_ans_len = 1
     alpha = args.alpha
-    temperature = 0.01
-    top_k = 5
+    temperature = args.temp
+    top_k = args.topk
 
     tokenizer, model = get_ll2_model(model_name)
     #device = "cuda"

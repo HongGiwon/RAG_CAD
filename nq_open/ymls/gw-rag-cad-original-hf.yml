@@ -31,7 +31,6 @@ spec:
           pip install --root-user-action=ignore transformers==4.35.2 tokenizers==0.15.1 huggingface_hub accelerate datasets bitsandbytes;
           pip install --root-user-action=ignore flash-attn==2.3.1.post1 --no-build-isolation;
           pip install --root-user-action=ignore jsonlines sentencepiece;
-          export OMP_NUM_THREADS=12;
           sleep infinity;
         volumeMounts:
         - mountPath: /mnt/ceph_rbd

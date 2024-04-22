@@ -80,7 +80,7 @@ if __name__ == "__main__":
     max_ans_len_total = args.max_gen_len
     max_ans_len = 1
     alpha = args.alpha
-    temperature = 0.8
+    temperature = 0.01
     top_k = 5
 
     tokenizer, model = get_ll2_model(model_name)
@@ -103,8 +103,8 @@ if __name__ == "__main__":
         empty_prompt, score = cad_prompts[-1] # empty
 
         for iter_gen in range(max_ans_len_total):
-            empty_generated_ids, _ = next_single_tok_gen(empty_prompt, generated_token_accum, max_ans_len=max_ans_len)
-            empty_score = softmax_weight(empty_generated_ids['scores'][0][0].cpu())
+            # empty_generated_ids, _ = next_single_tok_gen(empty_prompt, generated_token_accum, max_ans_len=max_ans_len)
+            # empty_score = softmax_weight(empty_generated_ids['scores'][0][0].cpu())
             score_list = []
         
             for prompt, score in cad_prompts[:num_retrieved_docs]:
@@ -120,7 +120,7 @@ if __name__ == "__main__":
             weights = torch.softmax(top_k_portion_scores / temperature, dim=0)
             print(weights)
 
-            weighted_sum = torch.zeros_like(empty_score)
+            weighted_sum = torch.zeros_like(cad_score)
             for tensor, weight in zip(score_list, weights):
                 weighted_sum += tensor * weight
             

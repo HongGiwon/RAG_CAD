@@ -9,22 +9,18 @@ import argparse
 
 import torch
 
+def top_k_portion(x, k=10):
+    values, indices = torch.topk(x, k)
+    return values
+
 def kurtosis(x):
     # mean = x.mean()
     # deviations = x - mean
     median = torch.median(x)
     deviations = x - median
     std = torch.std(x, unbiased=True)
-    
     kurt = torch.mean((deviations / std) ** 4) - 3
-
-    # print(mean)
-    # print(deviations)
-    # print(std)
-    print((deviations / std))
     values, indices = torch.topk((deviations / std), 10)
-    print(values)
-    # print(kurt)
     return kurt + 3
 
 def parse_args():
@@ -117,10 +113,10 @@ if __name__ == "__main__":
 
             #stacked_tensors = torch.stack(score_list)
             
-            kurtosis_scores = torch.tensor([kurtosis(tensor) for tensor in score_list])
-            print(kurtosis_scores)
+            #kurtosis_scores = torch.tensor([kurtosis(tensor) for tensor in score_list])
+            top_k_portion_scores = torch.tensor([top_k_portion(tensor) for tensor in score_list])
+            print(top_k_portion_scores)
             weights = torch.softmax(kurtosis_scores / temperature, dim=0)
-            print(weights)
             weighted_sum = torch.zeros_like(empty_score)
             for tensor, weight in zip(score_list, weights):
                 weighted_sum += tensor * weight

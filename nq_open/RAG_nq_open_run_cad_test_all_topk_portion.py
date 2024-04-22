@@ -130,6 +130,7 @@ if __name__ == "__main__":
 
         generated_ans = tokenizer.decode(generated_token_accum[0], skip_special_tokens=False)
         output_prompts.append(generated_ans)
+        break
 
     with open(output_path, 'w') as f:
         json.dump(output_prompts, f)

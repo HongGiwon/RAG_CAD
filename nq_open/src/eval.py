@@ -46,6 +46,9 @@ output_paths = [
     '../outputs/rag_nq_10_cad_Meta-Llama-3-8B-Instruct_short_4_cadall_kl_keep_cad_fulldiff_sf_reverse.json',
     '../outputs/rag_nq_10_cad_Meta-Llama-3-8B-Instruct_short_4_cadall_ku_sf.json',
     '../outputs/rag_nq_10_cad_Meta-Llama-3-8B-Instruct_short_4_cadall_ku_reverse.json',
+    '../outputs/rag_nq_10_Meta-Llama-3-8B-Instruct_short_4_topkportion_sf_0.01_5.json',
+    '../outputs/rag_nq_10_Meta-Llama-3-8B-Instruct_short_4_topkportion_sf_0.1_5.json',
+    '../outputs/rag_nq_10_Meta-Llama-3-8B-Instruct_short_4_topkportion_sf_0.01_3.json',
 ]
 
 short_answer_list = []

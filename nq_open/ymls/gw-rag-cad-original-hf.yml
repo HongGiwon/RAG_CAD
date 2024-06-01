@@ -30,17 +30,17 @@ spec:
           pip install --root-user-action=ignore torch;
           pip install --root-user-action=ignore transformers==4.35.2 tokenizers==0.15.1 huggingface_hub accelerate datasets bitsandbytes;
           pip install --root-user-action=ignore jsonlines sentencepiece;
-          export OMP_NUM_THREADS=12;
+          export OMP_NUM_THREADS=8;
           sleep infinity;
         volumeMounts:
         - mountPath: /mnt/ceph_rbd
           name: volume
         resources:
           requests:
-            cpu: 12
+            cpu: 8
             memory: "100Gi"
           limits:
-            cpu: 12
+            cpu: 8
             memory: "100Gi"
             nvidia.com/gpu: 1
       nodeSelector:
